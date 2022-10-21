@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const port = 3200;
+const port = process.env.PORT || 3400;
 var hbs = require("hbs");
 const fs=require('fs');
 const requests = require("request");
@@ -19,27 +19,22 @@ app.set("views", templatepath);
 app.get("", (req, res) => {
   res.render("index");
 });
-app.get("/about", (req, res) => {
-  res.render("about");
-});
-app.get("/services", (req, res) => {
-  res.render("services");
-}); 
-app.get("/api", (req, res) => {
-        requests("https://api.openweathermap.org/data/2.5/weather?q=Surat&appid=f91fcd1579d24a239e63d59386308b3b"
-        ).on('data',(chunk)=>{
-          const objData=JSON.parse(chunk);
-          const arrData=[objData];
-          const temp=Math.round(arrData[0].main.temp-273.15);
-          // console.log(Math.round(arrData[0].main.temp-273.15));
-          // console.log(arrData[0].name);
-          const city=arrData[0].name;
-          console.log(`temerature is ${temp}&#8451 and city name is ${city}`);
 
-          res.send(`temerature is ${temp}&#8451 and city name is ${city}`);
-        });
+// app.get("/api", (req, res) => {
+//         requests("https://api.openweathermap.org/data/2.5/weather?q=Surat&appid=f91fcd1579d24a239e63d59386308b3b"
+//         ).on('data',(chunk)=>{
+//           const objData=JSON.parse(chunk);
+//           const arrData=[objData];
+//           const temp=Math.round(arrData[0].main.temp-273.15);
+//           // console.log(Math.round(arrData[0].main.temp-273.15));
+//           // console.log(arrData[0].name);
+//           const city=arrData[0].name;
+//           console.log(`temerature is ${temp}&#8451 and city name is ${city}`);
+
+//           res.send(`temerature is ${temp}&#8451 and city name is ${city}`);
+//         });
         
-});
+// });
 
 
 app.get("*", (req, res) => {
@@ -47,5 +42,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("server is listening on port 3200");
+  console.log(`server is listening on port ${port}`);
 });
